@@ -1,0 +1,160 @@
+html {
+  background-color: rgb(32, 30, 30);
+}
+
+body {
+    display: contents;
+    margin: 0px;
+    width: 100%;
+    max-width: 100%;
+    height: 100vh;
+    /* max-height: 100%; */
+    /* padding-bottom: 50%; */
+}
+
+a {
+    text-decoration: none;
+    color: black;
+}
+
+.mime {
+    background-image: "./mime-cropped.jpg";
+}
+
+.dark {
+    background-color: rgb(32, 30, 30);
+}
+
+.square {
+    padding: 10px 10px;
+    margin: 20px;
+    width: 20px;
+    height: 18px;
+    max-width: 26px;
+    max-height: 26px;
+    background-image: "./mime-cropped.jpg";
+    background-color: rgb(84, 170, 88);
+    cursor: pointer;
+}
+
+.board {
+    text-align: center;
+    /* position: absolute; */
+}
+
+#outmost {
+    width: 100%;
+    max-width: 100%;
+    height: 100%;
+    max-height: 100%;
+    display: flex;
+    justify-content: center;
+    padding-top: 3%;
+}
+
+#mimesLeft {
+    color: white;
+    font-size: 48px;
+}
+
+.outer {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    margin: 0px;
+}
+
+.controls {
+    padding: 12px 35px;
+}
+
+.active {
+    background-color: rgb(108, 108, 233) !important;
+}
+
+.difficulty {
+    margin: 16px 0px;
+    padding: 6px 10px;
+    background-color: aliceblue;
+    border-radius: 30px;
+    cursor: pointer;
+    width: 130px;
+}
+
+.square:hover {
+    background-color: bisque;
+}
+
+.theme {
+    margin-top: 40px;
+    color: white;
+    font-size: 24px;
+    /* display: block; */
+    justify-content: center;
+    align-content: center;
+}
+
+
+/* switch example taken from https://www.w3schools.com/howto/howto_css_switch.asp */
+/* The switch - the box around the slider */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+  }
+  
+  /* Hide default HTML checkbox */
+  .switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+  
+  /* The slider */
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: .4s;
+    transition: .4s;
+  }
+  
+  .slider:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
+  }
+  
+  input:checked + .slider {
+    background-color: #2196F3;
+  }
+  
+  input:focus + .slider {
+    box-shadow: 0 0 1px #2196F3;
+  }
+  
+  input:checked + .slider:before {
+    -webkit-transform: translateX(26px);
+    -ms-transform: translateX(26px);
+    transform: translateX(26px);
+  }
+  
+  /* Rounded sliders */
+  .slider.round {
+    border-radius: 34px;
+  }
+  
+  .slider.round:before {
+    border-radius: 50%;
+  }
