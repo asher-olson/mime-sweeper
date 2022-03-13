@@ -1,19 +1,37 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Board from './Board';
 import Controls from './Controls';
 import uuid from 'react-uuid';
 
 var numRevealed = 0;
+const LOCAL_STORAGE_KEY = "mimewseeper.records";
+const DIFFICULTIES = {"easy": 30, "medium": 60, "hard": 99};
+const TOWIN = {"easy": 138, "medium": 260, "hard": 381};
+var timerInterval;
 
 function App() {
   const [settings, setSettings] = useState({theme: "dark", difficulty: "medium", mimesLeft: 60});
   const [board, setBoard] = useState(generateBoard(settings.difficulty));
+  const [time, setTime] = useState(0);
+  const [bests, setBests] = useState([]);
+  
+  useEffect(() => {
+    timerInterval = setInterval(() => {
+      updateTimer();
+    }, 1000);
+    return () => clearInterval(timerInterval);
+  }, []);
 
-  const DIFFICULTIES = {"easy": 30, "medium": 60, "hard": 99};
-  const TOWIN = {"easy": 138, "medium": 260, "hard": 381};
-  console.log("at the top, resetting numrevealed");
-  
-  
+  useEffect(() => {
+    const storedBests = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY));
+    if (storedBests){
+      setBests(storedBests);
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(bests));
+  }, [bests]);
 
   function getSquare(id, b){
     for(let i = 0; i < b.length; i++){
@@ -30,6 +48,10 @@ function App() {
     const square = getSquare(id, newBoard);
     if(square.revealed){
       return;
+    }
+
+    if(square.isMime){
+      lose();
     }
 
     // if val is 0, reveal all adjacent squares
@@ -86,11 +108,6 @@ function App() {
     }
   }
 
-  function win(){
-    // reveal a div overlayed over the screen
-    alert("hold this W");
-  }
-
   function toggleMarked(id){
     const newBoard = [...board];
     const square = getSquare(id, newBoard);
@@ -107,6 +124,11 @@ function App() {
     setSettings({theme: settings.theme, difficulty: settings.difficulty, mimesLeft: newLeft});
   }
 
+  function updateTimer(){
+    console.log("in update timer, new time: " + time);
+    setTime(time => time + 1);
+  }
+
   function changeDifficulty(e){
     let diff = e.target.id;
     let newSettings = {theme: settings.theme, difficulty: diff, mimesLeft: DIFFICULTIES[diff]};
@@ -117,13 +139,50 @@ function App() {
 
     console.log("change difficulty reset");
     numRevealed = 0;
+
+    if(timerInterval !== undefined){
+      console.log("timer was set already, setting new interval");
+      clearInterval(timerInterval);
+      setTime(0);
+      timerInterval = setInterval(updateTimer, 1000);
+    } else {
+      console.log("timer not set, setting for first time");
+      timerInterval = setInterval(updateTimer, 1000);
+    }
+    
+  }
+
+  function win(){
+    // reveal a div overlayed over the screen
+    clearInterval(timerInterval);
+
+    bests[settings.difficulty] = time;
+    alert("you won in " + time + " seconds");
+  }
+
+  function lose(){
+    //reveal all bombs
+    const newBoard = [...board];
+    for(let i = 0; i < newBoard.length; i++){
+      for(let j = 0; j < newBoard[i].length; j++){
+        if(newBoard[i][j].isMime){
+          newBoard[i][j].revealed = true;
+        }
+      }
+    }
+
+    setBoard(newBoard);
+    alert("u lose");
   }
 
   return (
-    <div id="outmost" className="dark">
-      <Board board={board} revealSquare={revealSquare} toggleMarked={toggleMarked} />
-      <Controls settings={settings} changeDifficulty={changeDifficulty} />
-    </div>
+    <>
+      <div className='me-link'><a href="https://asherolson.com">Visit Me</a></div>
+      <div id="outmost" className="dark">
+        <Board board={board} revealSquare={revealSquare} toggleMarked={toggleMarked} />
+        <Controls settings={settings} changeDifficulty={changeDifficulty} time={time} best={bests[settings.difficulty]} />
+      </div>
+    </>
   );
 }
 

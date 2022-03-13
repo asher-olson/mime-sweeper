@@ -14,7 +14,21 @@ body {
 
 a {
     text-decoration: none;
-    color: black;
+    color: white;
+}
+
+.me-link {
+  display: flex;
+  background-color: rgb(108, 108, 233);
+  width: 85px;
+  justify-content: center;
+  margin: 20px 0px 0px 30px;
+  padding: 12px 0px;
+  border-radius: 30px;
+}
+
+.me-link > a {
+  align-content: center;
 }
 
 .mime {
@@ -23,6 +37,12 @@ a {
 
 .dark {
     background-color: rgb(32, 30, 30);
+}
+
+.timer {
+  margin-top: 24px;
+  font-size: 36px;
+  color:white;
 }
 
 .square {
@@ -49,7 +69,7 @@ a {
     max-height: 100%;
     display: flex;
     justify-content: center;
-    padding-top: 3%;
+    padding-top: 2%;
 }
 
 #mimesLeft {
