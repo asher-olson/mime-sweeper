@@ -1,6 +1,5 @@
 import React from 'react';
 import Square from './Square';
-import uuid from 'react-uuid';
 
 export default function Board({board, revealSquare, toggleMarked}) {
 //   console.log(board)

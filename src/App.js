@@ -17,7 +17,7 @@ function App() {
   
   useEffect(() => {
     timerInterval = setInterval(() => {
-      updateTimer();
+      setTime(time => time + 1);
     }, 1000);
     return () => clearInterval(timerInterval);
   }, []);
@@ -65,7 +65,6 @@ function App() {
         sq.revealed = true;
         numRevealed++;
         if(sq.value === 0){
-          console.log("in helper");
           // call helper on adjacent squares
           if(sq.row - 1 >= 0){
             if(sq.col - 1 >= 0){
@@ -102,7 +101,6 @@ function App() {
     }
     
     setBoard(newBoard);
-    console.log(numRevealed);
     if(numRevealed === TOWIN[settings.difficulty]){
       win();
     }
@@ -125,7 +123,6 @@ function App() {
   }
 
   function updateTimer(){
-    console.log("in update timer, new time: " + time);
     setTime(time => time + 1);
   }
 
@@ -141,12 +138,10 @@ function App() {
     numRevealed = 0;
 
     if(timerInterval !== undefined){
-      console.log("timer was set already, setting new interval");
       clearInterval(timerInterval);
       setTime(0);
       timerInterval = setInterval(updateTimer, 1000);
     } else {
-      console.log("timer not set, setting for first time");
       timerInterval = setInterval(updateTimer, 1000);
     }
     
@@ -172,7 +167,7 @@ function App() {
     }
 
     setBoard(newBoard);
-    alert("u lose");
+    alert("YOU LOSE. click a difficulty to play again");
   }
 
   return (
@@ -189,22 +184,22 @@ function App() {
 
 
 function generateBoard(difficulty){
-  if(difficulty == "easy"){
+  if(difficulty === "easy"){
     var x = 12;
     var y = 14;
     var nMimes = 30
   }
-  else if(difficulty == "medium"){
-    var x = 16;
-    var y = 20;
-    var nMimes = 60;
+  else if(difficulty === "medium"){
+    x = 16;
+    y = 20;
+    nMimes = 60;
   } else {
-    var x = 20;
-    var y = 24;
-    var nMimes = 99;
+    x = 20;
+    y = 24;
+    nMimes = 99;
   }
 
-  var board = Array.apply(null, Array(x)).map(function () {});
+  var board = Array.apply(null, Array(x)).map(function () {return 0;});
 
   for(let i = 0; i < board.length; i++){
     board[i] = Array.apply(null, Array(y)).map(function () {return 0;});
