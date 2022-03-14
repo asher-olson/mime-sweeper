@@ -13,7 +13,7 @@ function App() {
   const [settings, setSettings] = useState({theme: "dark", difficulty: "medium", mimesLeft: 60});
   const [board, setBoard] = useState(generateBoard(settings.difficulty));
   const [time, setTime] = useState(0);
-  const [bests, setBests] = useState([]);
+  const [bests, setBests] = useState({});
   
   useEffect(() => {
     timerInterval = setInterval(() => {
@@ -24,12 +24,15 @@ function App() {
 
   useEffect(() => {
     const storedBests = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY));
+    console.log(`loading bests: ${storedBests}`);
     if (storedBests){
+      console.log("bests loaded");
       setBests(storedBests);
     }
   }, []);
 
   useEffect(() => {
+    console.log(`bests changed: ${bests}`)
     localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(bests));
   }, [bests]);
 
@@ -151,7 +154,16 @@ function App() {
     // reveal a div overlayed over the screen
     clearInterval(timerInterval);
 
-    bests[settings.difficulty] = time;
+    if(bests[settings.difficulty] < time || !bests[settings.difficulty]){
+      if(typeof(bests) != "object"){
+        var newBests = {};
+      } else {
+        newBests = {...bests};
+      }
+      newBests[settings.difficulty] = time;
+      setBests(newBests);
+      console.log(`in win: bests: ${bests}`);
+    }
     alert("you won in " + time + " seconds");
   }
 

@@ -9,8 +9,6 @@ export default function Square({props, revealSquare, toggleMarked}) {
   }
 
   function handleLeftClick(e){
-      console.log("in handle left click");
-      console.log(props.marked);
       toggleMarked(props.id);
       e.preventDefault();
   }
