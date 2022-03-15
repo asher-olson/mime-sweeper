@@ -154,7 +154,7 @@ function App() {
     // reveal a div overlayed over the screen
     clearInterval(timerInterval);
 
-    if(bests[settings.difficulty] < time || !bests[settings.difficulty]){
+    if(bests[settings.difficulty] > time || !bests[settings.difficulty]){
       if(typeof(bests) != "object"){
         var newBests = {};
       } else {
